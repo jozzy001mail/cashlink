@@ -11,8 +11,8 @@ wallet (the wallet signs a real Bitcoin Cash **mainnet** transaction) or with
 any BCH wallet via a BIP21 QR code. CashLink watches the merchant address
 on-chain and marks the invoice paid the moment the transaction lands.
 
-- **Live demo:** https://cashlink.vercel.app *(deploy in progress — see below)*
-- **Presentation:** [`public/presentation/`](public/presentation/) (HTML slide deck, based on the BLAZE "Widget Factory" template)
+- **Live demo:** https://dorahacks-bchblaze-2026.vercel.app
+- **Presentation:** https://dorahacks-bchblaze-2026.vercel.app/presentation/ (source in [`public/presentation/`](public/presentation/))
 - **Demo script:** [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md)
 
 ## Why this, why now
