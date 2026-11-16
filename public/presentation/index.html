@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CashLink — BCH BLAZE 2026</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; background: #0f1f18; color: #14201b; }
+  .deck { max-width: 960px; margin: 0 auto; padding: 24px; }
+  .slide {
+    background: #fff; border-radius: 16px; padding: 48px 56px; margin-bottom: 24px;
+    min-height: 480px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .slide h1 { font-size: 44px; margin: 0 0 8px; letter-spacing: -1px; }
+  .slide h2 { font-size: 32px; margin: 0 0 16px; color: #078a66; }
+  .slide p, .slide li { font-size: 19px; line-height: 1.55; }
+  .slide ul, .slide ol { padding-left: 24px; }
+  .slide li { margin-bottom: 8px; }
+  .kicker { color: #0ac18e; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; font-size: 14px; }
+  .sub { color: #5c6b64; font-size: 20px; }
+  .big { font-size: 56px; font-weight: 800; color: #0ac18e; }
+  .cols { display: flex; gap: 32px; }
+  .cols > div { flex: 1; }
+  .tag { display: inline-block; background: #e8f9f2; color: #078a66; border-radius: 999px; padding: 4px 14px; font-weight: 700; font-size: 15px; }
+  .mono { font-family: ui-monospace, Menlo, monospace; font-size: 15px; word-break: break-all; }
+  .foot { text-align: center; color: #9db8ab; font-size: 14px; padding-bottom: 24px; }
+  code { background: #f4f3ec; padding: 2px 6px; border-radius: 4px; font-size: 16px; }
+  @media (max-width: 640px) { .slide { padding: 28px 24px; min-height: 0; } .slide h1 { font-size: 32px; } .cols { flex-direction: column; } }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <section class="slide">
+    <div class="kicker">BCH BLAZE 2026 · Mainnet Track</div>
+    <h1>CashLink</h1>
+    <p class="sub">Bitcoin Cash payment links for small businesses.<br />A link, a QR code — and the money goes straight to the merchant.</p>
+    <p><span class="tag">Non-custodial</span> <span class="tag">No account</span> <span class="tag">WizardConnect</span></p>
+    <p class="sub">Owoade · DoraHacks @owoade · github.com/jozzy001mail/cashlink</p>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">The problem</div>
+    <h2>Small shops can't take crypto — and cards cost them</h2>
+    <ul>
+      <li>Card fees, chargebacks and slow settlement eat a market trader's margin.</li>
+      <li>Bitcoin Cash settles in seconds for a fraction of a cent — but there is no dead-simple way for a café or trader to accept it.</li>
+      <li>Existing tools need accounts, custody, or a developer. A shop owner has a phone and a queue of customers.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">The solution</div>
+    <h2>CashLink: a payment link, not a platform</h2>
+    <div class="cols">
+      <div>
+        <p><strong>1. Merchant creates a link</strong><br />Amount in USD or BCH, a label, a payout address. Share link + QR code. No account, no custody, no fees from us.</p>
+      </div>
+      <div>
+        <p><strong>2. Customer pays in BCH</strong><br />In-app with a WizardConnect wallet (the wallet signs a real BCH mainnet transaction), or with any BCH wallet via a BIP21 QR code.</p>
+      </div>
+      <div>
+        <p><strong>3. Verified on-chain</strong><br />CashLink watches the merchant address and marks the invoice paid the moment the transaction lands. Every payment links to a block explorer.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">Demo</div>
+    <h2>Try it in 2 minutes — no wallet needed</h2>
+    <ol>
+      <li>Open the live demo and click <strong>“Try the demo →”</strong>.</li>
+      <li>See the demo invoice (0.0001 BCH, “Demo coffee”) and simulate the payment — clearly labelled, no real BCH moves.</li>
+      <li>Create a real $5 invoice, open its share link in a second tab, and see the pay view: WizardConnect connect, fee preview, BIP21 QR, live chain detection.</li>
+    </ol>
+    <p class="sub">Full walkthrough: <code>DEMO_SCRIPT.md</code> in the repo.</p>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">How it works</div>
+    <h2>Real BCH mainnet transactions</h2>
+    <ul>
+      <li><strong>WizardConnect:</strong> QR pairing with Paytaca &amp; other BCH wallets; the dapp derives receive/change addresses from the wallet's xpub — keys never leave the wallet.</li>
+      <li><strong>CashScript:</strong> builds the P2PKH transaction (UTXO gathering, placeholder unlocker, change output, 2 sats/byte fee) and produces the WalletConnect transaction object for the wallet to sign and broadcast.</li>
+      <li><strong>Detection:</strong> Electrum provider with a Blockchair REST fallback watches the merchant address; paid invoices link to the explorer.</li>
+      <li><strong>Price:</strong> live BCH/USD from CoinGecko so merchants can price in USD.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">What we proved</div>
+    <h2>Verified — and honestly labelled</h2>
+    <ul>
+      <li><span class="big">11/11</span> tests pass, including a full local P2PKH build + sign + BCH VM verification with a throwaway key (<code>npm test</code>).</li>
+      <li>Clean production build (<code>npm run build</code>). Invoice logic, BIP21, amount math and fee estimation all unit-tested.</li>
+      <li><strong>Not verifiable from our machine:</strong> the live WizardConnect sign step needs a real BCH wallet on a phone — none was available, and the VM blocks outbound WebSockets. The integration follows the official docs exactly; the unsigned transaction it hands the wallet is the same shape the local test proves valid.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">Why BCH, why now</div>
+    <h2>Built for the shops, not the speculators</h2>
+    <ul>
+      <li>BCH fees are sub-cent and settlement is seconds — the only chain where a $5 coffee payment makes economic sense.</li>
+      <li>Nigeria and Africa: huge informal retail, expensive card rails, young phone-first merchants. CashLink meets them where they are.</li>
+      <li>Next: recurring links, multi-item carts, and a merchant dashboard — all on the same non-custodial core.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">Links</div>
+    <h2>CashLink</h2>
+    <p>Live demo: <strong>cashlink.vercel.app</strong></p>
+    <p>Source: <strong>github.com/jozzy001mail/cashlink</strong></p>
+    <p>Community Choice — send EMBER2026 to:<br /><span class="mono">bitcoincash:qr27lumephpejzr575s46nmmxlzs5nlr3ywwdksu6u</span></p>
+    <p class="sub">Thank you — questions welcome. Built for BCH BLAZE 2026.</p>
+  </section>
+
+</div>
+<div class="foot">CashLink · BCH BLAZE 2026 · Based on the BLAZE “Widget Factory” presentation template</div>
+</body>
+</html>
